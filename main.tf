@@ -7,7 +7,7 @@ resource "aws_vpc" "main" {
   tags = merge(
     var.common_tags,
     {
-        Name = var.project_name
+        Name = "${var.project_name}-${var.env}"
     },
     {
       vpc_tags = var.vpc_tags
@@ -25,7 +25,7 @@ resource "aws_internet_gateway" "igw" {
       igw_tags = var.igw_tags
     },
     {
-        Name = var.project_name
+        Name = "${var.project_name}-${var.env}"
     }
   )
 }
@@ -41,7 +41,7 @@ resource "aws_subnet" "public_subnet" {
   tags = merge(
     var.common_tags,
     {
-        Name = "${var.project_name}-public-${local.azs[count.index]}"
+        Name = "${var.project_name}-${var.env}-public-${local.azs[count.index]}"
     }
   )
 }
@@ -66,7 +66,7 @@ resource "aws_subnet" "private_subnet" {
   tags = merge(
     var.common_tags,
     {
-        Name = "${var.project_name}-private-${local.azs[count.index]}"
+        Name = "${var.project_name}-${var.env}-private-${local.azs[count.index]}"
     }
   )
 }
@@ -91,7 +91,7 @@ resource "aws_subnet" "database_subnet" {
   tags = merge(
     var.common_tags,
     {
-        Name = "${var.project_name}-database-${local.azs[count.index]}"
+        Name = "${var.project_name}-${var.env}-database-${local.azs[count.index]}"
     }
   )
 }
@@ -103,7 +103,7 @@ resource "aws_route_table" "public_rt" {
   tags = merge(
     var.common_tags,
     {
-      Name = "${var.project_name}-public_rt"
+      Name = "${var.project_name}-${var.env}-public_rt"
     },
     var.public_route_table_tags
   )
@@ -130,7 +130,7 @@ resource "aws_eip" "elastic_ip" {
 #   tags = merge(
 #     var.common_tags,
 #     {
-#         Name = var.project_name
+#         Name = "${var.project_name}-${var.env}"
 #     },
 #     var.nat_gateway_tags
 #   )
@@ -146,7 +146,7 @@ resource "aws_route_table" "private_rt" {
   tags = merge(
     var.common_tags,
     {
-      Name = "${var.project_name}-private_rt"
+      Name = "${var.project_name}-${var.env}-private_rt"
     },
     var.private_route_table_tags
   )
@@ -177,7 +177,7 @@ resource "aws_route_table" "database_rt" {
   tags = merge(
     var.common_tags,
     {
-      Name = "${var.project_name}-database_rt"
+      Name = "${var.project_name}-${var.env}-database_rt"
     },
     var.database_route_table_tags
   )
